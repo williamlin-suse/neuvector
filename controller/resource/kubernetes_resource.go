@@ -1337,7 +1337,14 @@ exit_watcher:
 				log.WithFields(log.Fields{"error": err}).Error("Channel is closed")
 				return
 			}
-			// We only care about write events, not events like CHMOD.
+			// In a pod, under /var/run/secrets/kubernetes.io/serviceaccount folder:
+			//   token(A: symbolic) -> ..data/token (B: ..data is symbolic too) -> actual token folder/file like (C1) ..2025_10_30_19_15_47.4131197903/token
+			// When the token is renewed:
+			// 1. A new target folder is created for storing the new token file (like C2: ..2025_10_30_20_04_41.9385673578/token)
+			// 2. The 2nd symbolic(in B) is updated to point to the new target folder/file(C2)
+			// 3. The old target folder(C1) is removed (this is the last operation on /var/run/secrets/kubernetes.io/serviceaccount folder for token renewal)
+			// 4. There is no change on the 1st symbolic(A)
+			// So we only care about Remove event, not events like CHMOD, for token renewal activity.
 			if event.Has(fsnotify.Remove) {
 				targetPath := evalSymlinks(filePath)
 				for range 4 {
