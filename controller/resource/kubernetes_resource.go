@@ -12,7 +12,6 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
-	"path/filepath"
 	"reflect"
 	"strconv"
 	"strings"
@@ -1285,25 +1284,9 @@ func (d *kubernetes) createK8sClient() {
 	d.clientLock.Unlock()
 }
 
-func evalSymlinks(filePath string) string {
-	if info, err := os.Lstat(filePath); err == nil {
-		if info.Mode()&os.ModeSymlink == os.ModeSymlink {
-			targetPath, err := filepath.EvalSymlinks(filePath)
-			if err == nil && targetPath != "" {
-				return targetPath
-			}
-		}
-	} else {
-		log.WithFields(log.Fields{"error": err}).Error("Failed to describe file")
-	}
-
-	return filePath
-}
-
 func (d *kubernetes) monitorK8sTokenFile() {
 	const filePath = "/var/run/secrets/kubernetes.io/serviceaccount/token"
-	targetPath := evalSymlinks(filePath)
-	info, err := os.Stat(targetPath)
+	info, err := os.Stat(filePath)
 	if err != nil {
 		log.WithFields(log.Fields{"error": err}).Error("Failed to get file info")
 		return
@@ -1346,12 +1329,11 @@ exit_watcher:
 			// 4. There is no change on the 1st symbolic(A)
 			// So we only care about Remove event, not events like CHMOD, for token renewal activity.
 			if event.Has(fsnotify.Remove) {
-				targetPath := evalSymlinks(filePath)
 				for range 4 {
 					time.Sleep(time.Second * 2)
-					info, err := os.Stat(targetPath)
+					info, err := os.Stat(filePath)
 					if err != nil {
-						log.WithFields(log.Fields{"targetPath": targetPath, "error": err}).Error("Failed to get file info")
+						log.WithFields(log.Fields{"error": err}).Error("Failed to get file info")
 						continue
 					}
 					newLastModTime := info.ModTime()
