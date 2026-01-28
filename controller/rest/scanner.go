@@ -268,8 +268,8 @@ func handlerScanWorkloadReport(w http.ResponseWriter, r *http.Request, ps httpro
 	restRespSuccess(w, r, resp, acc, login, nil, "Get container scan report")
 }
 
-func handlerWorkloadsScanReport(w http.ResponseWriter, r *http.Request, ps httprouter.Params) { //->
-	log.WithFields(log.Fields{"URL": r.URL.String()}).Debug()
+func handlerWorkloadsScanReport(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	log.WithFields(log.Fields{"URL": r.URL.String()}).Debug("")
 	defer r.Body.Close()
 
 	acc, login := getAccessControl(w, r, "")
@@ -514,8 +514,8 @@ func handlerScanHostReport(w http.ResponseWriter, r *http.Request, ps httprouter
 	restRespSuccess(w, r, resp, acc, login, nil, "Get host scan report")
 }
 
-func handlerHostsScanReport(w http.ResponseWriter, r *http.Request, ps httprouter.Params) { //->
-	log.WithFields(log.Fields{"URL": r.URL.String()}).Debug()
+func handlerHostsScanReport(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	log.WithFields(log.Fields{"URL": r.URL.String()}).Debug("")
 	defer r.Body.Close()
 
 	acc, login := getAccessControl(w, r, "")

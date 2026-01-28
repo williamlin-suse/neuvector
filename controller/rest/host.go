@@ -51,7 +51,7 @@ func getHosts(query *restQuery, acc *access.AccessControl) []*api.RESTHost {
 
 	// Filter
 	if len(hosts) <= query.start {
-		return nil
+		return retHosts
 	}
 
 	if len(query.filters) > 0 {

@@ -9789,9 +9789,7 @@ definitions:
   RESTHostScanData:
     type: object
     required:
-      - workload_name
-      - workload_domain
-      - workload_host_name
+      - host_name
     properties:
       host_name:
         type: string
