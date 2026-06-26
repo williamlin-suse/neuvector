@@ -409,7 +409,6 @@ func acquireCVEDBUploadLock(clusHelper kv.ClusterHelper) (cluster.LockInterface,
 	return lock, err
 }
 
-
 // ScannerRegisterV3 implements bidirectional streaming scanner registration.
 // The scanner sends version info first; the controller checks if its CVE database is
 // already current. If so, it registers the scanner immediately without requiring a
