@@ -2187,3 +2187,12 @@ func GetAllRiskyRolesByServiceAccount(saName, namespace string) ([]int, error) {
 	}
 	return riskyTags, nil
 }
+
+func AdjustRequiredRBAC(autoInternalCert bool) {
+	if !autoInternalCert {
+		delete(rbacRoleBindingsWanted, NvJobCreationRoleBinding)
+		delete(rbacRoleBindingsWanted, NvCertUpgraderRoleBinding)
+		delete(rbacRolesWanted, NvJobCreationRole)
+		delete(rbacRolesWanted, NvCertUpgraderRole)
+	}
+}

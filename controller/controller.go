@@ -613,6 +613,8 @@ func main() {
 				os.Exit(-2)
 			}
 		}
+	} else {
+		resource.AdjustRequiredRBAC(false)
 	}
 
 	err = cluster.ReloadInternalCert()
