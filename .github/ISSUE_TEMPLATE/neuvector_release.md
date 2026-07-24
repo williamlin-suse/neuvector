@@ -24,7 +24,7 @@ follow the checklist below to ensure a smooth release process.
 - [ ] Load release build in long run setup.
 - [ ] OpenShift Operator. (Esther)
 - [ ] Rancher feature chart PR submitted and merged. (Leo)
-- [ ] Publish UBI. (Kyle)
+- [ ] Publish UBI. (Esther)
 - [ ] Announce neuvector-updates email list. (William)
 - [ ] CRD changes document.
 - [ ] Documentation. (need to update support matrix and features.)
